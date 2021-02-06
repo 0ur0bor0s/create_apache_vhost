@@ -1,6 +1,7 @@
 import argparse
 import sys
 import subprocess
+import getpass
 
 # Process arguments
 parser = argparse.ArgumentParser(description='Setup a new apache virtual host on an Ubuntu system. Only tested on versions 18.04 and 20.04')
@@ -31,6 +32,9 @@ if install_sts != 0:
     subprocess.call(['sudo', 'apt', 'install', 'apache2'])
     subprocess.call(['ufw', 'allow', "'Apache'"])
 
+# Get username
+username = getpass.getuser()
+
 # Iterate though each virtual host to be created
 for vh in sys.argv:
     if vh == 'create_apache_vhost.py':
@@ -40,7 +44,7 @@ for vh in sys.argv:
 
     src_path = '/var/www/' + vh
     subprocess.call(['sudo', 'mkdir', src_path])
-    subprocess.call(['sudo', 'chown', '-R', '$LOGNAME:$LOGNAME', src_path])
+    subprocess.call(['sudo', 'chown', '-R', username + ':' + username, src_path])
     subprocess.call(['sudo', 'chmod', '755', src_path])
     subprocess.call(['sudo', 'touch', src_path + 'index.html'])
 
@@ -67,7 +71,7 @@ for vh in sys.argv:
     CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>""")
 
-    print("\n   [" + vh + "] virtual host was successfully created")
+    print("\n   [" + vh + "] virtual host was successfully created!")
     print("    - Source is located at " + src_path)
     print("    - Config file is located at " + conf_path + "\n")
 

@@ -6,4 +6,4 @@ The program can be run using the following command:
 ```bash
 sudo python3 create_apache_vhost.py <desired_domain_name>
 ```
-Note that the script must with run sudo privileges.
+Note that the script must run with sudo privileges.

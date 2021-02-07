@@ -14,6 +14,18 @@ fa_flag = False
 for arg in vars(args):
     print(getattr(args, arg))
 
+# List of port numbers
+port_list = []
+
+# Ask for ports for the each domain
+print("IMPORTANT: Please make sure that port numbers are unique.")
+for vh in sys.argv:
+    if vh == 'create_apache_vhost.py':
+        continue
+
+    port = input("Which port should be used for " + vh + "?: ")
+    port_list.append(port)
+
 while True:
     ans = input("Proceed? [Y/n] ")
     if ans == 'n' or ans == 'N':
@@ -36,6 +48,7 @@ if install_sts != 0:
 username = getpass.getuser()
 
 # Iterate though each virtual host to be created
+index = 0
 for vh in sys.argv:
     if vh == 'create_apache_vhost.py':
         continue
@@ -62,7 +75,7 @@ for vh in sys.argv:
     subprocess.call(['sudo', 'touch', conf_path])
 
     with open(conf_path, 'w') as out:
-        out.write("""<VirtualHost *:80>
+        out.write("""<VirtualHost *:""" + port_list[index] + """>
     ServerAdmin webmaster@localhost
     ServerName """ + vh + """
     ServerAlias www.""" + vh + """
@@ -74,6 +87,8 @@ for vh in sys.argv:
     print("\n   [" + vh + "] virtual host was successfully created!")
     print("    - Source is located at " + src_path)
     print("    - Config file is located at " + conf_path + "\n")
+
+    index += 1
 
 
     

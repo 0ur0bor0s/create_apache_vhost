@@ -55,7 +55,7 @@ for vh in sys.argv:
     
     print("Creating virtual host: " + vh)
 
-    src_path = '/var/www/html' + vh
+    src_path = '/var/www/html/' + vh
     subprocess.call(['sudo', 'mkdir', src_path])
     subprocess.call(['sudo', 'chown', '-R', username + ':' + username, src_path])
     subprocess.call(['sudo', 'chmod', '755', src_path])

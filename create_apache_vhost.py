@@ -55,7 +55,7 @@ for vh in sys.argv:
     
     print("Creating virtual host: " + vh)
 
-    src_path = '/var/www/' + vh
+    src_path = '/var/www/html' + vh
     subprocess.call(['sudo', 'mkdir', src_path])
     subprocess.call(['sudo', 'chown', '-R', username + ':' + username, src_path])
     subprocess.call(['sudo', 'chmod', '755', src_path])
@@ -78,8 +78,8 @@ for vh in sys.argv:
         out.write("""<VirtualHost *:""" + port_list[index] + """>
     ServerAdmin webmaster@localhost
     ServerName """ + vh + """
-    ServerAlias www.""" + vh + """
-    DocumentRoot /var/www/""" + vh + """
+    ServerAlias www.""" + vh + """.com
+    DocumentRoot /var/www/html/""" + vh + """
     ErrorLog ${APACHE_LOG_DIR}/error.log
     CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>""")

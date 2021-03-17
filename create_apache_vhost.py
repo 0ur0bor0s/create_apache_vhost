@@ -18,13 +18,16 @@ for arg in vars(args):
 port_list = []
 
 # Ask for ports for the each domain
-print("IMPORTANT: Please make sure that port numbers are unique.")
+print("Note: port defaults to 80")
 for vh in sys.argv:
     if vh == 'create_apache_vhost.py':
         continue
 
     port = input("Which port should be used for " + vh + "?: ")
-    port_list.append(port)
+    if port:
+        port_list.append(port)
+    else:
+        port_list.append("80")
 
 while True:
     ans = input("Proceed? [Y/n] ")
@@ -84,12 +87,15 @@ for vh in sys.argv:
     CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>""")
 
+    subprocess.call(['sudo', 'a2ensite', vh])
+
     print("\n   [" + vh + "] virtual host was successfully created!")
     print("    - Source is located at " + src_path)
     print("    - Config file is located at " + conf_path + "\n")
 
     index += 1
 
+subprocess.call(['systemctl', 'restart', 'apache2'])
 
     
 
